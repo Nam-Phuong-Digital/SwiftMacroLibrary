@@ -68,18 +68,30 @@ public struct DecodeInitMacro: MemberMacro {
     }
 }
 
+public struct LocalizableMacro: DeclarationMacro {
+    public static func expansion(of node: some SwiftSyntax.FreestandingMacroExpansionSyntax, in context: some SwiftSyntaxMacros.MacroExpansionContext) throws -> [SwiftSyntax.DeclSyntax] {
+        guard let argument = node.argumentList.first
+               else {
+            fatalError("compiler bug: the macro does not have any arguments")
+        }
+        let string = argument.expression
+        return ["static var \(raw: string.description.replacingOccurrences(of: "\"", with: "")) = NSLocalizedString(\(string), comment: \"\")"]
+    }
+}
+
 @main
 struct CabinMacroPlugin: CompilerPlugin {
-    let providingMacros: [Macro.Type] = [
+    public let providingMacros: [Macro.Type] = [
         DecodeInitMacro.self,
+        LocalizableMacro.self,
     ]
 }
 
-enum UserMacroError: CustomStringConvertible, Error {
+public enum UserMacroError: CustomStringConvertible, Error {
     case onlyApplicableToStruct
     case onlyApplicableToCodable
     
-    var description: String {
+    public var description: String {
         switch self {
         case .onlyApplicableToStruct: return "can only be applied to a structure"
         case .onlyApplicableToCodable: return "can only be applied to a structure conform Codable"

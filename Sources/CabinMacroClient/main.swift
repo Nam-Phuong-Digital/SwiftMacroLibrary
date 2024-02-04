@@ -86,3 +86,5 @@ import CabinMacro
 //        case version = "Version"
 //    }
 //}
+
+#Localizable("email")
