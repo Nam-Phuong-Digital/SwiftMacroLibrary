@@ -79,11 +79,23 @@ public struct LocalizableMacro: DeclarationMacro {
     }
 }
 
+public struct LocalizableMacro2: DeclarationMacro {
+    public static func expansion(of node: some SwiftSyntax.FreestandingMacroExpansionSyntax, in context: some SwiftSyntaxMacros.MacroExpansionContext) throws -> [SwiftSyntax.DeclSyntax] {
+        guard let argument = node.argumentList.first
+               else {
+            fatalError("compiler bug: the macro does not have any arguments")
+        }
+        let string = argument.expression.description.replacingOccurrences(of: "\"", with: "")
+        return ["static var \(raw: string.description.replacingOccurrences(of: "\"", with: "")) = String.\(raw: string)"]
+    }
+}
+
 @main
 struct CabinMacroPlugin: CompilerPlugin {
     public let providingMacros: [Macro.Type] = [
         DecodeInitMacro.self,
         LocalizableMacro.self,
+        LocalizableMacro2.self,
     ]
 }
 

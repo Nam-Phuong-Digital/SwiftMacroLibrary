@@ -6,3 +6,6 @@ public macro DecodeInit() = #externalMacro(module: "CabinMacroMacros", type: "De
 
 @freestanding(declaration,names: arbitrary)
 public macro Localizable(_: String) = #externalMacro(module: "CabinMacroMacros", type: "LocalizableMacro")
+
+@freestanding(declaration,names: arbitrary)
+public macro Localizable2(_: String) = #externalMacro(module: "CabinMacroMacros", type: "LocalizableMacro2")
