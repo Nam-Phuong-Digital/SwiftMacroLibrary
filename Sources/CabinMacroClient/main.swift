@@ -87,4 +87,8 @@ import CabinMacro
 //    }
 //}
 
-#Localizable("email")
+
+extension String {
+    #Localizable("email")
+    #Localizable2("email")
+}
