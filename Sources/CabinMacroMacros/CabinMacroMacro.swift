@@ -43,7 +43,6 @@ public struct DecodeInitMacro: MemberMacro {
             )
         )
         {
-            
             ExprSyntax("let container = try decoder.container(keyedBy: CodingKeys.self)")
             for (name, type) in zip(varNames, varTypeS) {
                 if let type = type.as(IdentifierTypeSyntax.self) {
@@ -75,7 +74,8 @@ public struct LocalizableMacro: DeclarationMacro {
             fatalError("compiler bug: the macro does not have any arguments")
         }
         let string = argument.expression
-        return ["static var \(raw: string.description.replacingOccurrences(of: "\"", with: "")) = NSLocalizedString(\(string), comment: \"\")"]
+        let comment = node.argumentList.last?.expression ?? ""
+        return ["static var \(raw: string.description.replacingOccurrences(of: "\"", with: "")) = NSLocalizedString(\(string), comment: \(comment))"]
     }
 }
 

@@ -90,6 +90,8 @@ public struct CrewDutyModelNew: Codable {
 
 
 extension String {
-    #Localizable("email")
-    #Localizable2("email")
+    #Localizable("email", comment: "Your email registered to aplicationp")
+//    #Localizable2("email")
 }
+
+print(String.email)
