@@ -60,7 +60,9 @@ extension IdentifierTypeSyntax {
     }
     
     var isCodable:Bool {
-        name.text == "Codable"
+        name.text == "Codable" ||
+        name.text == "Decodable" ||
+        name.text == "Encodable"
     }
 }
 

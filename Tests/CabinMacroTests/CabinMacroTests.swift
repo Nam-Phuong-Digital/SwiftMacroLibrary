@@ -1,15 +1,13 @@
 import SwiftSyntaxMacros
-import CabinMacroMacros
 import SwiftSyntaxMacrosTestSupport
+import CabinMacroMacros
 import XCTest
 
 // Macro implementations build for the host, so the corresponding module is not available when cross-compiling. Cross-compiled tests may still make use of the macro itself in end-to-end tests.
-//import CabinMacro
 import CabinMacro
 
 let testMacros: [String: Macro.Type] = [
     "DecodeInit": DecodeInitMacro.self,
-    "Localizable": LocalizableMacro.self,
 ]
 
 final class CabinMacroTests: XCTestCase {
@@ -17,10 +15,11 @@ final class CabinMacroTests: XCTestCase {
         assertMacroExpansion(
                    """
                    @DecodeInit
-                   public struct Book: Codable {
+                   public struct Book<T: Decodable>: Codable {
                        public let handOverid, price: Int
                        public let title: String
                        public var docs: [String] = []
+                       public let value: T? 
                         enum CodingKeys:String, CodingKey {
                             case handOverid = "id"
                             case title

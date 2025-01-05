@@ -2,13 +2,14 @@ import CabinMacro
 import Foundation
 
 @DecodeInit
-struct abc {
+struct abc<T: Decodable>: Decodable {
     let id:Int
+    let value: T?
 }
 
 
 @DecodeInit
-public struct CrewDutyModelNew: Codable {
+public struct CrewDutyModelNew<T: Hashable>: Decodable {
     
     public var id: Int
     public var foMaDV: String
@@ -36,6 +37,7 @@ public struct CrewDutyModelNew: Codable {
     public var foTimeMin: Int
     public var foEndPlace, other, foEOD: String
     public var userID, version: Int
+    public var value: T?
     
     enum CodingKeys: String, CodingKey {
         case id = "ID"
@@ -86,5 +88,6 @@ public struct CrewDutyModelNew: Codable {
         case foEOD = "FO_Eod"
         case userID = "UserId"
         case version = "Version"
+        case value = "Value"
     }
 }
