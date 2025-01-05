@@ -43,6 +43,7 @@ public struct DecodeInitMacro: MemberMacro {
             )
         )
         {
+            
             ExprSyntax("let container = try decoder.container(keyedBy: CodingKeys.self)")
             for (name, type) in zip(varNames, varTypeS) {
                 if let type = type.as(IdentifierTypeSyntax.self) {
@@ -67,43 +68,18 @@ public struct DecodeInitMacro: MemberMacro {
     }
 }
 
-public struct LocalizableMacro: DeclarationMacro {
-    public static func expansion(of node: some SwiftSyntax.FreestandingMacroExpansionSyntax, in context: some SwiftSyntaxMacros.MacroExpansionContext) throws -> [SwiftSyntax.DeclSyntax] {
-        guard let argument = node.argumentList.first
-               else {
-            fatalError("compiler bug: the macro does not have any arguments")
-        }
-        let string = argument.expression
-        let comment = node.argumentList.last?.expression ?? ""
-        return ["static var \(raw: string.description.replacingOccurrences(of: "\"", with: "")) = NSLocalizedString(\(string), comment: \(comment))"]
-    }
-}
-
-public struct LocalizableMacro2: DeclarationMacro {
-    public static func expansion(of node: some SwiftSyntax.FreestandingMacroExpansionSyntax, in context: some SwiftSyntaxMacros.MacroExpansionContext) throws -> [SwiftSyntax.DeclSyntax] {
-        guard let argument = node.argumentList.first
-               else {
-            fatalError("compiler bug: the macro does not have any arguments")
-        }
-        let string = argument.expression.description.replacingOccurrences(of: "\"", with: "")
-        return ["static var \(raw: string.description.replacingOccurrences(of: "\"", with: "")) = String.\(raw: string)"]
-    }
-}
-
 @main
 struct CabinMacroPlugin: CompilerPlugin {
-    public let providingMacros: [Macro.Type] = [
+    let providingMacros: [Macro.Type] = [
         DecodeInitMacro.self,
-        LocalizableMacro.self,
-        LocalizableMacro2.self,
     ]
 }
 
-public enum UserMacroError: CustomStringConvertible, Error {
+enum UserMacroError: CustomStringConvertible, Error {
     case onlyApplicableToStruct
     case onlyApplicableToCodable
     
-    public var description: String {
+    var description: String {
         switch self {
         case .onlyApplicableToStruct: return "can only be applied to a structure"
         case .onlyApplicableToCodable: return "can only be applied to a structure conform Codable"
@@ -128,7 +104,7 @@ public func generateInitialCode(
     }
     initialCode = String(initialCode.dropLast(2))
     initialCode += ")"
-    if let structModifier = structModifier {
+    if let structModifier {
         initialCode = structModifier + " " + initialCode
     }
     return SyntaxNodeString(stringLiteral: initialCode)
@@ -139,7 +115,7 @@ public func generateInitialDecode(
     structModifier:String?
 ) -> SyntaxNodeString {
     var initialCode: String = "init(from decoder: Decoder) throws"
-    if let structModifier = structModifier{
+    if let structModifier {
         initialCode = structModifier + " " + initialCode
     }
     return SyntaxNodeString(stringLiteral: initialCode)

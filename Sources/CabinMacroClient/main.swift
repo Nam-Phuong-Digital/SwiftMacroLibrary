@@ -88,11 +88,3 @@ public struct CrewDutyModelNew: Codable {
         case version = "Version"
     }
 }
-
-
-extension String {
-    #Localizable("email", comment: "Your email registered to aplicationp")
-//    #Localizable2("email")
-}
-
-print(String.email)
