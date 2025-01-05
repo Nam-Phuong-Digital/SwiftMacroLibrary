@@ -44,8 +44,6 @@ let package = Package(
         .testTarget(
             name: "CabinMacroTests",
             dependencies: [
-                "CabinMacroMacros",
-                "CabinMacroMacros",
                 .product(name: "SwiftSyntaxMacrosTestSupport", package: "swift-syntax"),
             ]
         ),

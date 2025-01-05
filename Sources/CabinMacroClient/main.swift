@@ -1,4 +1,5 @@
 import CabinMacro
+import Foundation
 
 @DecodeInit
 struct abc {
