@@ -5,11 +5,15 @@ import Foundation
 struct abc<T: Decodable>: Decodable {
     let id:Int
     let value: T?
+    enum CodingKeys: CodingKey {
+        case id
+        case value
+    }
 }
 
 
 @DecodeInit
-public struct CrewDutyModelNew<T: Hashable>: Decodable {
+public struct CrewDutyModelNew<T: Decodable>: Decodable {
     
     public var id: Int
     public var foMaDV: String
